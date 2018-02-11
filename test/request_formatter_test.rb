@@ -9,8 +9,8 @@ class RequestFormatterTest < Minitest::Test
       "Connection: keep-alive", "Cache-Control: no-cache",
       "User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_2)
       AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36",
-       "Postman-Token: b2e47831-a988-11c7-5312-757131842c6c", "Accept: */*",
-       "Accept-Encoding: gzip, deflate, br", "Accept-Language: en-US,en;q=0.9"]
+      "Postman-Token: b2e47831-a988-11c7-5312-757131842c6c", "Accept: */*",
+      "Accept-Encoding: gzip, deflate, br", "Accept-Language: en-US,en;q=0.9"]
   end
 
  def test_if_it_exists
