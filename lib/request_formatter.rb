@@ -1,24 +1,38 @@
-require 'pry'
-
 class RequestFormatter
 
   def request_full_output(request_lines)
-    verb = request_lines[0].split(" ")[0]
-    path = request_lines[0].split(" ")[1]
-    protocol = request_lines[0].split(" ")[2]
-    host = request_lines.select { |line| line.start_with?("Host:") }[0].split(":")[1].strip
-    port = request_lines.select { |line| line.start_with?("Host:") }[0].split(":")[2]
-    origin = host
-    accept = request_lines.select { |line| line.start_with?("Accept:") }[0]
-    "<pre>\nVerb: #{verb}\nPath: #{path}\nProtocol: #{protocol}\nHost: #{host}\nPort: #{port}\nOrigin: #{origin}\n#{accept}\n</pre>"
+    "<pre>\nVerb: #{verb(request_lines)}\nPath: #{path(request_lines)\
+    }\nProtocol: #{protocol(request_lines)}\nHost: #{host(request_lines)\
+    }\nPort: #{port(request_lines)}\nOrigin: #{origin(request_lines)\
+    }\n#{accept(request_lines)}\n</pre>"
   end
 
-  def request_path(request_lines)
+  def verb(request_lines)
+    request_lines[0].split(" ")[0]
+  end
+
+  def path(request_lines)
     request_lines[0].split(" ")[1]
   end
 
-  def request_verb(request_lines)
-    request_lines[0].split(" ")[0]
+  def protocol(request_lines)
+    request_lines[0].split(" ")[2]
+  end
+
+  def host(request_lines)
+    request_lines.select { |line| line.start_with?("Host:") }[0].split(":")[1].strip
+  end
+
+  def origin(request_lines)
+    host(request_lines)
+  end
+
+  def port(request_lines)
+    request_lines.select { |line| line.start_with?("Host:") }[0].split(":")[2]
+  end
+
+  def accept(request_lines)
+    request_lines.select { |line| line.start_with?("Accept:") }[0]
   end
 
   def parameter_words(request_lines)
@@ -27,9 +41,13 @@ class RequestFormatter
       []
     else
       parameters = path.split("?")[1].split("&")
-      parameters.map do |parameter|
-        parameter.split("=")[1]
-      end
+      parameter_split_multiple_words(parameters)
+    end
+  end
+
+  def parameter_split_multiple_words(parameters)
+    parameters.map do |parameter|
+      parameter.split("=")[1]
     end
   end
 
