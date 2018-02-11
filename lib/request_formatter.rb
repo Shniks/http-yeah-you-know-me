@@ -1,10 +1,10 @@
 class RequestFormatter
 
   def request_full_output(request_lines)
-    "<pre>\nVerb: #{verb(request_lines)}\nPath: #{path(request_lines)\
-    }\nProtocol: #{protocol(request_lines)}\nHost: #{host(request_lines)\
-    }\nPort: #{port(request_lines)}\nOrigin: #{origin(request_lines)\
-    }\n#{accept(request_lines)}\n</pre>"
+    ["<pre>", "Verb: #{verb(request_lines)}", "Path: #{path(request_lines)}",
+    "Protocol: #{protocol(request_lines)}", "Host: #{host(request_lines)}",
+    "Port: #{port(request_lines)}", "Origin: #{origin(request_lines)}",
+    "#{accept(request_lines)}", "</pre>"].join("\n")
   end
 
   def verb(request_lines)
