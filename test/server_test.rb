@@ -5,10 +5,16 @@ require_relative 'test_helper'
 
 class ServerTest < Minitest::Test
 
-  def test_if_it_exists
-    server = Server.new(9292)
+  def setup
+    @server = Server.new(9292)
+  end
 
-    assert_instance_of Server, server
+  def teardown
+    @server.close_the_server
+  end
+
+  def test_if_it_exists
+    assert_instance_of Server, @server
   end
 
 end
