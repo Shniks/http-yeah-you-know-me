@@ -16,7 +16,7 @@ class HelloWorldTest < Minitest::Test
   end
 
   def test_if_count_can_increase
-    @helloworld.hello_world("./hello")
+    @helloworld.hello_world("/hello")
 
     assert_equal 1, @helloworld.hello_count
     refute_equal 0, @helloworld.hello_count
@@ -24,7 +24,7 @@ class HelloWorldTest < Minitest::Test
 
   def test_if_count_can_increase_multiple_times
     12.times do
-      @helloworld.hello_world("./hello")
+      @helloworld.hello_world("/hello")
     end
 
     assert_equal 12, @helloworld.hello_count
@@ -32,7 +32,7 @@ class HelloWorldTest < Minitest::Test
 
   def test_if_count_can_increase_multiple_times
     12.times do
-      @helloworld.hello_world("./hello")
+      @helloworld.hello_world("/hello")
     end
 
     assert_equal 12, @helloworld.hello_count
@@ -40,7 +40,7 @@ class HelloWorldTest < Minitest::Test
 
   def test_if_it_can_send_a_response
     12.times do
-      @helloworld.hello_world("./hello")
+      @helloworld.hello_world("/hello")
     end
 
     assert_equal "Hello World! (12)", @helloworld.hello_world_response
