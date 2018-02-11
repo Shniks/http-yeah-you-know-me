@@ -33,6 +33,7 @@ class Server
 
   def close_the_server
     @client.close
+    @tcp_server.close
   end
 
 end
