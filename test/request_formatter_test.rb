@@ -60,7 +60,7 @@ class RequestFormatterTest < Minitest::Test
    refute_equal "*/*", @request_formatter.accept(@request_lines)
  end
 
- def test_parameter_one_parameter
+ def test_parameter_with_one_parameter
    request_lines = ["GET /word_search?word=milk HTTP/1.1", "Host:\
     127.0.0.1:9292", "Connection: keep-alive", "Cache-Control: no-cache",\
     "User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_2)\
@@ -75,7 +75,7 @@ class RequestFormatterTest < Minitest::Test
    refute_equal ["milk", "honeys"],result
  end
 
- def test_parameter_three_parameters
+ def test_parameter_with_three_parameters
    request_lines = ["GET /word_search?word=milk&word=honey&word=cake HTTP/1.1"\
     , "Host: 127.0.0.1:9292", "Connection: keep-alive", "Cache-Control\
     : no-cache", "User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_2)\
@@ -84,6 +84,14 @@ class RequestFormatterTest < Minitest::Test
     "Accept-Encoding: gzip, deflate, br", "Accept-Language: en-US,en;q=0.9"]
 
    result = @request_formatter.parameter_words(request_lines)
+
+   assert_equal ["milk", "honey", "cake"], result
+   refute_equal ["milk", "honeys", "cake"], result
+ end
+
+ def test_parameter_split_multiple_words_method_can_split_multiple_words
+   parameters = ["word=milk", "word=honey", "word=cake"]
+   result = @request_formatter.parameter_split_multiple_words(parameters)
 
    assert_equal ["milk", "honey", "cake"], result
    refute_equal ["milk", "honeys", "cake"], result
