@@ -12,7 +12,8 @@ class Responder
     path = @request_formatter.path(request_lines)
     return hello_world_response(hello_count) if path == "/hello"
     return date_time_response if path == "/datetime"
-    return word_search_response(request_lines) if path.start_with?("/word_search?")
+    return word_search_response(request_lines) if path.start_with?\
+    ("/word_search?")
     return shutdown_response(request_count) if path == "/shutdown"
     return root_response(request_lines)
   end
