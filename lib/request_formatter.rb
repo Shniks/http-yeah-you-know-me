@@ -37,9 +37,8 @@ class RequestFormatter
   end
 
   def parameter_words(request_lines)
-    path = request_lines[0].split(" ")[1]
-    return [] if path.split("?").length == 1
-    parameters = path.split("?")[1].split("&")
+    return [] if path(request_lines).split("?").length == 1
+    parameters = path(request_lines).split("?")[1].split("&")
     parameter_split_multiple_words(parameters)
   end
 
