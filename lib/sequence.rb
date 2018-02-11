@@ -1,4 +1,5 @@
 require './lib/server'
+require './lib/request_formatter'
 
 class Sequence
 
