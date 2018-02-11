@@ -21,8 +21,9 @@ class RequestFormatterTest < Minitest::Test
    expected = "<pre>""\n""Verb: GET""\n""Path: /hello""\n""Protocol: HTTP/1.1"\
    "\n""Host: 127.0.0.1""\n""Port: 9292""\n""Origin: 127.0.0.1""\n"\
    "Accept: */*""\n""</pre>"
+   result = @request_formatter.request_full_output(@request_lines)
 
-   assert_equal expected, @request_formatter.request_full_output(@request_lines)
+   assert_equal expected, result
  end
 
  def test_request_verb
