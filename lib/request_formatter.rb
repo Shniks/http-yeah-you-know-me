@@ -20,7 +20,8 @@ class RequestFormatter
   end
 
   def host(request_lines)
-    request_lines.select { |line| line.start_with?("Host:") }[0].split(":")[1].strip
+    request_lines.select { |line| line.start_with?("Host:") }[0].split(":")\
+    [1].strip
   end
 
   def origin(request_lines)
