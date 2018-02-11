@@ -17,7 +17,7 @@ class DateTimeTest < Minitest::Test
     assert_instance_of String, @dateandtime.date_time(path)
   end
 
-  def test_if_its_response_to_incorrect_date_and_time_path
+  def test_its_response_to_incorrect_date_and_time_path
     path = "/hello"
 
     assert_nil nil, @dateandtime.date_time(path)
