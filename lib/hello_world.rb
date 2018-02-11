@@ -9,7 +9,7 @@ class HelloWorld
   end
 
   def hello_world(path)
-    @hello_count +=1 if path == "./hello"
+    @hello_count +=1 if path == "/hello"
   end
 
   def hello_world_response
