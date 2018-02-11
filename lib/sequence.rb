@@ -5,10 +5,10 @@ class Sequence
 
   def start
     server = Server.new(9292)
-    request_formatter
+    get_path
   end
 
-  def request_formatter
+  def get_path
     RequestFormatter.new
   end
 
