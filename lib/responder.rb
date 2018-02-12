@@ -8,7 +8,7 @@ class Responder
     @request_formatter = RequestFormatter.new
   end
 
-  def response_created(request_lines, request_count, hello_count)
+  def response_created(request_lines, request_count = 0, hello_count = 0)
     path = @request_formatter.path(request_lines)
     return hello_world_response(request_lines, hello_count) if path == "/hello"
     return date_time_response(request_lines) if path == "/datetime"

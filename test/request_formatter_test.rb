@@ -6,11 +6,7 @@ class RequestFormatterTest < Minitest::Test
   def setup
     @request_formatter = RequestFormatter.new
     @request_lines = ["GET /hello HTTP/1.1", "Host: 127.0.0.1:9292",
-      "Connection: keep-alive", "Cache-Control: no-cache",
-      "User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_2)
-      AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36",
-      "Postman-Token: b2e47831-a988-11c7-5312-757131842c6c", "Accept: */*",
-      "Accept-Encoding: gzip, deflate, br", "Accept-Language: en-US,en;q=0.9"]
+      "Connection: keep-alive", "Accept: */*"]
   end
 
  def test_if_it_exists
@@ -63,12 +59,7 @@ class RequestFormatterTest < Minitest::Test
 
  def test_parameter_with_one_parameter
    request_lines = ["GET /word_search?word=milk HTTP/1.1", "Host:\
-    127.0.0.1:9292", "Connection: keep-alive", "Cache-Control: no-cache",\
-    "User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_2)\
-    AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84\
-    Safari/537.36", "Postman-Token: b2e47831-a988-11c7-5312-757131842c6c",\
-    "Accept: */*", "Accept-Encoding: gzip, deflate, br",\
-    "Accept-Language: en-US,en;q=0.9"]
+    127.0.0.1:9292", "Connection: keep-alive"]
 
    result = @request_formatter.parameter_words(request_lines)
 
@@ -78,11 +69,7 @@ class RequestFormatterTest < Minitest::Test
 
  def test_parameter_with_three_parameters
    request_lines = ["GET /word_search?word=milk&word=honey&word=cake HTTP/1.1"\
-    , "Host: 127.0.0.1:9292", "Connection: keep-alive", "Cache-Control\
-    : no-cache", "User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_2)\
-    AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36"\
-    , "Postman-Token: b2e47831-a988-11c7-5312-757131842c6c", "Accept: */*",\
-    "Accept-Encoding: gzip, deflate, br", "Accept-Language: en-US,en;q=0.9"]
+    , "Host: 127.0.0.1:9292", "Connection: keep-alive"]
 
    result = @request_formatter.parameter_words(request_lines)
 
