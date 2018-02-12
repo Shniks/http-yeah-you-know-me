@@ -9,8 +9,10 @@ class Sequence
   end
 
   def get_path
-    RequestFormatter.new
+    RequestFormatter.new.path(request_lines)
   end
+
+  
 
 
 

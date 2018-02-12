@@ -10,11 +10,12 @@ class Responder
 
   def response_created(request_lines, request_count, hello_count)
     path = @request_formatter.path(request_lines)
-    return hello_world_response(hello_count) if path == "/hello"
-    return date_time_response if path == "/datetime"
+    return hello_world_response(request_lines, hello_count) if path == "/hello"
+    return date_time_response(request_lines) if path == "/datetime"
     return word_search_response(request_lines) if path.start_with?\
     ("/word_search?")
-    return shutdown_response(request_count) if path == "/shutdown"
+    return shutdown_response(request_lines, request_count)\
+     if path == "/shutdown"
     return root_response(request_lines)
   end
 
@@ -22,20 +23,22 @@ class Responder
     @request_formatter.request_full_output(request_lines)
   end
 
-  def hello_world_response(hello_count)
-    "Hello World! (#{hello_count})"
+  def hello_world_response(request_lines, hello_count)
+    root_response(request_lines) + "\n" + "Hello World! (#{hello_count})"
   end
 
-  def date_time_response
+  def date_time_response(request_lines)
+    root_response(request_lines) + "\n" +\
     Time.now.strftime('%H:%M%p on %A, %B %d, %Y')
   end
 
   def word_search_response(request_lines)
+    root_response(request_lines) + "\n" +\
     WordSearch.new.word_search_response(request_lines)
   end
 
-  def shutdown_response(request_count)
-    "Total requests: #{request_count}"
+  def shutdown_response(request_lines, request_count)
+    root_response(request_lines) + "\n" + "Total requests: #{request_count}"
   end
 
 end
