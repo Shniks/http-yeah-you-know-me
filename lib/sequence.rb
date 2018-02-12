@@ -19,11 +19,11 @@ class Sequence
       path = request_formatter.path(request_lines)
       responder = Responder.new
 
-      request_count += 1
-      hello_count += 1 if path == "/hello"
-
       response = responder.response_created(request_lines, request_count, hello_count)
       server.response_from_server(response)
+      
+      request_count += 1
+      hello_count += 1 if path == "/hello"
 
       if path == "/start_game" && request_formatter.verb(request_lines) == "POST"
         game = Game.new(server)
