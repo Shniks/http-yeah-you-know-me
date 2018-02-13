@@ -14,6 +14,7 @@ class Responder
     return date_time_response(request_lines) if path == "/datetime"
     return word_search_response(request_lines) if path.start_with?\
     ("/word_search?")
+    return game_response(request_lines) if path == "/start_game"
     return shutdown_response(request_lines, request_count)\
      if path == "/shutdown"
     return root_response(request_lines)
@@ -35,6 +36,14 @@ class Responder
   def word_search_response(request_lines)
     root_response(request_lines) + "\n" +\
     WordSearch.new.word_search_response(request_lines)
+  end
+
+  def game_response(request_lines)
+    if @request_formatter.verb(request_lines) == "POST"
+      root_response(request_lines) + "\n" + "Good luck!"
+    else
+      root_response(request_lines)
+    end
   end
 
   def shutdown_response(request_lines, request_count)
