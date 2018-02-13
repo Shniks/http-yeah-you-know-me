@@ -1,5 +1,10 @@
 class RequestFormatter
 
+  attr_reader :verb,
+              :path,
+              :guess,
+              :content_length
+
   def request_full_output(request_lines)
     ["<pre>", "Verb: #{verb(request_lines)}", "Path: #{path(request_lines)}",
     "Protocol: #{protocol(request_lines)}", "Host: #{host(request_lines)}",
@@ -8,11 +13,11 @@ class RequestFormatter
   end
 
   def verb(request_lines)
-    request_lines[0].split(" ")[0]
+    @verb = request_lines[0].split(" ")[0]
   end
 
   def path(request_lines)
-    request_lines[0].split(" ")[1]
+    @path = request_lines[0].split(" ")[1]
   end
 
   def protocol(request_lines)
@@ -20,8 +25,8 @@ class RequestFormatter
   end
 
   def host(request_lines)
-    request_lines.select { |line| line.start_with?("Host:") }[0].split(":")\
-    [1].strip
+    @host = request_lines.select { |line| line.start_with?("Host:") }\
+    [0].split(":")[1].strip
   end
 
   def origin(request_lines)
@@ -29,7 +34,8 @@ class RequestFormatter
   end
 
   def port(request_lines)
-    request_lines.select { |line| line.start_with?("Host:") }[0].split(":")[2]
+    request_lines.select { |line| line.start_with?("Host:") }\
+    [0].split(":")[2]
   end
 
   def accept(request_lines)
@@ -46,6 +52,19 @@ class RequestFormatter
     parameters.map do |parameter|
       parameter.split("=")[1]
     end
+  end
+
+  def content_length(request_lines)
+    @content_length = request_lines.select { |line| line.start_with?("Content-Length:") }[0].split(":")[1].to_i
+  end
+
+  def location(request_lines)
+    return "Location: http://#{host(request_lines)}:#{port(request_lines)\
+    }#{path(request_lines)}\r\n"
+  end
+
+  def guess(body)
+    @guess = body.split("\r\n")[-2].to_i
   end
 
 end

@@ -18,6 +18,7 @@ class Server
       request_lines << line.chomp
     end
     request_lines
+    binding.pry
   end
 
   def request_from_game_client

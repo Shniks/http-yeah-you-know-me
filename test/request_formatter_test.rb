@@ -6,7 +6,7 @@ class RequestFormatterTest < Minitest::Test
   def setup
     @request_formatter = RequestFormatter.new
     @request_lines = ["GET /hello HTTP/1.1", "Host: 127.0.0.1:9292",
-      "Connection: keep-alive", "Accept: */*"]
+      "Connection: keep-alive", "Content-Length: 42", "Accept: */*"]
   end
 
  def test_if_it_exists
@@ -83,6 +83,15 @@ class RequestFormatterTest < Minitest::Test
 
    assert_equal ["milk", "honey", "cake"], result
    refute_equal ["milk", "honeys", "cake"], result
+ end
+
+ def test_request_content_length
+   assert_equal 42, @request_formatter.content_length(@request_lines)
+ end
+
+ def test_request_location
+   result = @request_formatter.location(@request_lines)
+   assert_equal "Location: http://127.0.0.1:9292/hello\r\n", result
  end
 
 end
