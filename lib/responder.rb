@@ -52,7 +52,7 @@ class Responder
   end
 
   def shutdown_response(request_lines, request_count)
-    root_response(request_lines) + "\n" + "Total requests: #{request_count}"
+    root_response(request_lines) + "\n" + "Total requests: #{request_count}\n"
   end
 
 end

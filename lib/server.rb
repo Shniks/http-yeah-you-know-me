@@ -39,10 +39,12 @@ class Server
   end
 
   def terminate_sequence(request)
-    unless @formatter.path(request) == '/shutdown' || @formatter.path(request) == '/force_error'
+    if @formatter.path(request) == '/shutdown'\
+       || @formatter.path(request) == '/force_error'
+      close_the_server
+    else
       sequence
     end
-    close_the_server
   end
 
   def close_the_server
