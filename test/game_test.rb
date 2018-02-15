@@ -1,5 +1,4 @@
 require './lib/game'
-require './lib/sequence'
 require_relative 'test_helper'
 
 class GameTest < Minitest::Test
