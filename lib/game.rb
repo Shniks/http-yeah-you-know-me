@@ -41,7 +41,7 @@ class Game
   end
 
   def player_guesses
-    if @guess_count > 0
+    if @guess_count > 0 #use if @guess?
       response = "Your guess is too high." if @guess > random_number
       response = "Your guess is too low." if @guess < random_number
       response = "Bingo! Your guess is correct." if @guess == random_number
@@ -51,6 +51,8 @@ class Game
   end
 
   def play_game
+    #capture @guess here for the first response
+    #need to SRP out the guess and continue game 
     if path(request_lines).start_with?("/game") && verb(request_lines) == "GET"
       game_response
     elsif path(request_lines).start_with?("/game") && verb(request_lines) == "POST"
@@ -60,6 +62,7 @@ class Game
 
   def game_response
     @server.response_from_server(player_guesses)
+    #need to output player guess too if guess is not equal to random number
     "The end" if player_guesses == "Bingo! Your guess is correct.\nYou have made #{@guess_count} guesses."
   end
 

@@ -1,10 +1,11 @@
 require './lib/game'
+require './lib/sequence'
 require_relative 'test_helper'
 
 class GameTest < Minitest::Test
 
   def setup
-    @game = Game.new
+    @game = Game.new(server)
   end
 
   def test_if_it_exists
