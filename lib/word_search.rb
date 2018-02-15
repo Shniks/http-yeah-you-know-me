@@ -1,4 +1,3 @@
-require './lib/sequence'
 require './lib/request_formatter'
 
 class WordSearch

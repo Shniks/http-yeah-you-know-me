@@ -46,9 +46,9 @@ class Server
   end
 
   def close_the_server
-    puts ["Wrote this response:", @headers, @output].join("\n")
     @client.close
     @tcp_server.close
+    puts ["Wrote this response:", @headers, @output].join("\n")
   end
 
   def header(output)
