@@ -2,6 +2,8 @@ class RequestFormatter
 
   attr_reader :verb,
               :path,
+              :protocol,
+              :port,
               :guess,
               :content_length
 
@@ -21,7 +23,7 @@ class RequestFormatter
   end
 
   def protocol(request_lines)
-    request_lines[0].split(" ")[2]
+    @protocol = request_lines[0].split(" ")[2]
   end
 
   def host(request_lines)
@@ -34,7 +36,7 @@ class RequestFormatter
   end
 
   def port(request_lines)
-    request_lines.select { |line| line.start_with?("Host:") }\
+    @port = request_lines.select { |line| line.start_with?("Host:") }\
     [0].split(":")[2]
   end
 

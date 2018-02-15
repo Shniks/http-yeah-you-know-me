@@ -6,9 +6,12 @@ class Responder
 
   def initialize
     @request_formatter = RequestFormatter.new
+    @hello_count = -1
+    @request_count = 0
   end
 
   def response_created(request_lines, request_count = 0, hello_count = 0)
+    @request_count += 1
     path = @request_formatter.path(request_lines)
     return hello_world_response(request_lines, hello_count) if path == "/hello"
     return date_time_response(request_lines) if path == "/datetime"
@@ -25,7 +28,8 @@ class Responder
   end
 
   def hello_world_response(request_lines, hello_count)
-    root_response(request_lines) + "\n" + "Hello World! (#{hello_count})"
+    @hello_count += 1
+    root_response(request_lines) + "\n" + "Hello World! (#{@hello_count})"
   end
 
   def date_time_response(request_lines)
@@ -47,7 +51,7 @@ class Responder
   end
 
   def shutdown_response(request_lines, request_count)
-    root_response(request_lines) + "\n" + "Total requests: #{request_count}"
+    root_response(request_lines) + "\n" + "Total requests: #{@request_count}"
   end
 
 end
