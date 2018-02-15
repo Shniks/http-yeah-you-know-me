@@ -10,7 +10,8 @@ class Responder
     @request_count = 0
   end
 
-  def response_created(request_lines, request_count = @request_count, hello_count = @hello_count)
+  def response_created(request_lines, request_count = @request_count,\
+     hello_count = @hello_count)
     @request_count += 1
     path = @request_formatter.path(request_lines)
     return hello_world_response(request_lines, hello_count) if path == "/hello"
