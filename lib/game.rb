@@ -18,7 +18,6 @@ class Game
     response = "too high." if @guess > random_number
     response = "too low." if @guess < random_number
     response = "correct." if @guess == random_number
-    response = response + "\n" + guess_count_output
   end
 
   def feedback
