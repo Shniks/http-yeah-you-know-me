@@ -1,5 +1,6 @@
 require './lib/request_formatter'
 require './lib/word_search'
+require './lib/server'
 require './lib/game'
 
 class Responder
@@ -8,6 +9,7 @@ class Responder
     @formatter = RequestFormatter.new
     @hello_count = 0
     @request_count = 0
+    @game_running = false
   end
 
   def route(request)
@@ -17,9 +19,9 @@ class Responder
   end
 
   def route_post(request)
-    return game_response(request) if @formatter.path(request) == "/start_game"
-    return @game.player_guess(@formatter.guess) if @formatter.path(@request) == "/game"
-    @game = Game.new if @formatter.path(@request) == "/start_game"
+    return start_game(request) if @formatter.path(request) == "/start_game"
+    return play_game if @formatter.path(@request).include?("/game")
+    return not_found
   end
 
   def route_get(request_lines, request_count, hello_count)
@@ -29,12 +31,12 @@ class Responder
     return date_time_response(request_lines) if path == "/datetime"
     return word_search_response(request_lines) if path.start_with?\
     ("/word_search?")
-    return @game.feedback if path == "/game"
+    return game if path == "/game"
     return shutdown_response(request_lines, request_count)\
      if path == "/shutdown"
     return root_response(request_lines) if path == "/"
-    return "500 SystemError" if path == "/force_error"
-    return "404 Not Found"
+    return force_error if path == "/force_error"
+    return not_found
   end
 
   def root_response(request_lines)
@@ -56,12 +58,30 @@ class Responder
     WordSearch.new.word_search_response(request_lines)
   end
 
-  def game_response(request_lines)
-    root_response(request_lines) + "\n" + "Good luck!"
-  end
-
   def shutdown_response(request_lines, request_count)
     root_response(request_lines) + "\n" + "Total requests: #{request_count}\n"
+  end
+
+  def not_found
+    "404 Not Found"
+  end
+
+  def force_error
+    "500 SystemError"
+  end
+
+  def start_game(request_lines)
+    root_response(request_lines) + "\n" + "Good luck!"
+
+
+  end
+
+  def game
+    @game.feedback
+  end
+
+  def play_game(guess)
+
   end
 
 end

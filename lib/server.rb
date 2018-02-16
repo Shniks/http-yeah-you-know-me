@@ -32,9 +32,10 @@ class Server
     request_lines
   end
 
-  def read_the_body
+  def read_guess
     body = @client.read(@formatter.content_length)
-    @formatter.user_guess(body)
+    guess = @formatter.user_guess(body)
+    @formatter.play_game(guess)
   end
 
   def response_from_server(response)
