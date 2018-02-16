@@ -1,28 +1,31 @@
 class Game
 
+  attr_reader :guess_count,
+              :guess
+
   def initialize
-    @guess = nil
     @guess_count = 0
   end
 
-  def random_number
-    rand(0..100)
+  def random_number(number = rand(0..100))
+    @random = number
   end
 
   def player_guess(guess)
-    @guess = guess.to_i
     @guess_count += 1
+    @guess = guess.to_i
   end
 
   def game_response
-    response = "too high." if @guess > random_number
-    response = "too low." if @guess < random_number
-    response = "correct." if @guess == random_number
+    response = "too high." if @guess > @random
+    response = "too low." if @guess < @random
+    response = "correct." if @guess == @random
+    response
   end
 
   def feedback
-    "Total number of guesses made: #{@guess_count}\nYour most recent guess\
-     of #{@guess} is #{game_response}\n"
+    ["Total number of guesses made: #{@guess_count}",
+    "Your most recent guess of #{@guess} is #{game_response}"].join("\n")
   end
 
 end
