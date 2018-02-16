@@ -5,15 +5,31 @@ require './lib/game'
 class Responder
 
   def initialize
-    @request_formatter = RequestFormatter.new
+    @formatter = RequestFormatter.new
     @hello_count = 0
     @request_count = 0
+  end
+
+  def route(request)
+    @request = request
+    route_post if @formatter.verb(request) == "POST"
+    route_get if @formatter.verb(request) == "GET"
+  end
+
+  def route_post
+    @game = Game.new if @formatter.path(@request) == "/start_game"
+    @game.player_guess(@formatter.guess) if @formatter.path(@request) == "/game"
+  end
+
+  def route_get
+
+
   end
 
   def response_created(request_lines, request_count = @request_count,\
      hello_count = @hello_count)
     @request_count += 1
-    path = @request_formatter.path(request_lines)
+    path = @formatter.path(request_lines)
     return hello_world_response(request_lines, hello_count) if path == "/hello"
     return date_time_response(request_lines) if path == "/datetime"
     return word_search_response(request_lines) if path.start_with?\
@@ -25,7 +41,7 @@ class Responder
   end
 
   def root_response(request_lines)
-    @request_formatter.request_full_output(request_lines)
+    @formatter.request_full_output(request_lines)
   end
 
   def hello_world_response(request_lines, hello_count)
@@ -44,7 +60,7 @@ class Responder
   end
 
   def game_response(request_lines)
-    if @request_formatter.verb(request_lines) == "POST"
+    if @formatter.verb(request_lines) == "POST"
       root_response(request_lines) + "\n" + "Good luck!"
     else
       root_response(request_lines)

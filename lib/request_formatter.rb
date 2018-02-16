@@ -1,10 +1,6 @@
 class RequestFormatter
 
-  attr_reader :verb,
-              :path,
-              :protocol,
-              :port,
-              :guess,
+  attr_reader :guess,
               :content_length
 
   def request_full_output(request_lines)
@@ -15,19 +11,19 @@ class RequestFormatter
   end
 
   def verb(request_lines)
-    @verb = request_lines[0].split(" ")[0]
+    request_lines[0].split(" ")[0]
   end
 
   def path(request_lines)
-    @path = request_lines[0].split(" ")[1]
+    request_lines[0].split(" ")[1]
   end
 
   def protocol(request_lines)
-    @protocol = request_lines[0].split(" ")[2]
+    request_lines[0].split(" ")[2]
   end
 
   def host(request_lines)
-    @host = request_lines.select { |line| line.start_with?("Host:") }\
+    request_lines.select { |line| line.start_with?("Host:") }\
     [0].split(":")[1].strip
   end
 
@@ -36,7 +32,7 @@ class RequestFormatter
   end
 
   def port(request_lines)
-    @port = request_lines.select { |line| line.start_with?("Host:") }\
+    request_lines.select { |line| line.start_with?("Host:") }\
     [0].split(":")[2]
   end
 
@@ -56,7 +52,7 @@ class RequestFormatter
     end
   end
 
-  def content_length(request_lines)
+  def request_content_length(request_lines)
     @content_length = request_lines.select { |line| line.start_with?("Content-Length:") }[0].split(":")[1].to_i
   end
 
@@ -65,7 +61,7 @@ class RequestFormatter
     }#{path(request_lines)}\r\n"
   end
 
-  def guess(body)
+  def user_guess(body)
     @guess = body.split("\r\n")[-2].to_i
   end
 

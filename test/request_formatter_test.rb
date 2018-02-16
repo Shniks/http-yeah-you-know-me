@@ -86,7 +86,7 @@ class RequestFormatterTest < Minitest::Test
   end
 
   def test_request_content_length
-    assert_equal 42, @request_formatter.content_length(@request_lines)
+    assert_equal 42, @request_formatter.request_content_length(@request_lines)
   end
 
   def test_request_location
@@ -101,7 +101,7 @@ class RequestFormatterTest < Minitest::Test
               "73",
               "------WebKitFormBoundaryqommBwQNJyHZJ2L8--"].join("\r\n")
 
-    assert_equal 73, @request_formatter.guess(body)
+    assert_equal 73, @request_formatter.user_guess(body)
   end
 
 end
