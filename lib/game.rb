@@ -1,9 +1,12 @@
 class Game
 
   def initialize
-    @random_number = rand(0..100)
     @guess = nil
     @guess_count = 0
+  end
+
+  def random_number
+    rand(0..100)
   end
 
   def player_guess(guess)
@@ -11,14 +14,16 @@ class Game
     @guess_count += 1
   end
 
-  def player_guesses
-    if @guess > 0
-      response = "Your guess is too high." if @guess > random_number
-      response = "Your guess is too low." if @guess < random_number
-      response = "Bingo! Your guess is correct." if @guess == random_number
-      response = response + "\n" + guess_count_output
-    end
-    response
+  def game_response
+    response = "too high." if @guess > random_number
+    response = "too low." if @guess < random_number
+    response = "correct." if @guess == random_number
+    response = response + "\n" + guess_count_output
   end
-  
+
+  def feedback
+    "Total number of guesses made: #{@guess_count}\nYour most recent guess\
+     of #{@guess} is #{game_response}\n"
+  end
+
 end
