@@ -13,7 +13,7 @@ class Responder
   def route(request)
     @request = request
     route_post if @formatter.verb(request) == "POST"
-    route_get if @formatter.verb(request) == "GET"
+    route_get(request, request_count = @request_count, hello_count = @hello_count) if @formatter.verb(request) == "GET"
   end
 
   def route_post
@@ -21,13 +21,7 @@ class Responder
     @game.player_guess(@formatter.guess) if @formatter.path(@request) == "/game"
   end
 
-  def route_get
-
-
-  end
-
-  def response_created(request_lines, request_count = @request_count,\
-     hello_count = @hello_count)
+  def route_get(request_lines, request_count, hello_count)
     @request_count += 1
     path = @formatter.path(request_lines)
     return hello_world_response(request_lines, hello_count) if path == "/hello"
@@ -35,9 +29,12 @@ class Responder
     return word_search_response(request_lines) if path.start_with?\
     ("/word_search?")
     return game_response(request_lines) if path == "/start_game"
+    return @game.feedback if path == "/game"
     return shutdown_response(request_lines, request_count)\
      if path == "/shutdown"
-    return root_response(request_lines)
+    return root_response(request_lines) if path == "/"
+    return "500 SystemError" if path == "/force_error"
+    return "404 Not Found"
   end
 
   def root_response(request_lines)

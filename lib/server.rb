@@ -14,7 +14,7 @@ class Server
   def sequence
     accept_request
     request = read_the_request
-    response = @responder.response_created(request)
+    response = @responder.route(request)
     response_from_server(response)
     terminate_sequence(request)
   end
