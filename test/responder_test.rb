@@ -44,6 +44,20 @@ class ResponderTest < Minitest::Test
     assert result.include?("Hello World! (12)")
   end
 
+  def test_route_post
+    request_lines = ["POST /something HTTP/1.1", "Host: 127.0.0.1:9292"]
+    result = @responder.route(request_lines)
+
+    assert_equal "404 Not Found", result
+  end
+
+  def test_force_error
+    request_lines = ["GET /force_error HTTP/1.1", "Host: 127.0.0.1:9292"]
+    result = @responder.route(request_lines)
+
+    assert_equal "500 SystemError", result
+  end
+
   def test_hello_world_response
     hello_count = 12
     result = @responder.hello_world_response(@request_lines, hello_count)
@@ -162,6 +176,32 @@ class ResponderTest < Minitest::Test
     request_lines = ["POST /start_game HTTP/1.1", "Host: 127.0.0.1:9292"]
     result = @responder.route(request_lines).split("\n").last
     expected = "Good luck!"
+
+    assert_equal expected, result
+  end
+
+  def test_another_game_response
+    request_lines = ["POST /start_game HTTP/1.1", "Host: 127.0.0.1:9292"]
+    result = @responder.route(request_lines).split("\n").last
+    request_lines = ["POST /start_game HTTP/1.1", "Host: 127.0.0.1:9292"]
+    result = @responder.route(request_lines).split("\n").last
+    expected = "Game in progress!"
+
+    assert_equal expected, result
+  end
+
+  def test_game_GET_response
+    request_lines = ["GET /game HTTP/1.1", "Host: 127.0.0.1:9292"]
+    result = @responder.route(request_lines).split("\n").last
+    expected = "No game in progress!"
+
+    assert_equal expected, result
+  end
+
+  def test_game_POST_response
+    request_lines = ["POST /game HTTP/1.1", "Host: 127.0.0.1:9292"]
+    result = @responder.route(request_lines).split("\n").last
+    expected = "No game in progress!"
 
     assert_equal expected, result
   end
