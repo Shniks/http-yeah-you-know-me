@@ -5,6 +5,22 @@ require_relative 'test_helper'
 
 class ServerTest < Minitest::Test
 
+  def test_if_it_has_a_server
+    server = Server.new(9191)
+    request_lines = ["GET / HTTP/1.1", "Host: 127.0.0.1:9292"]
+
+    assert_instance_of Server, server
+    server.tcp_server.close
+  end
+
+  def test_if_it_has_headers
+    server = Server.new(9191)
+    output = "Testing this piece"
+
+    assert server.header(output).include?("text/html; charset=iso-8859-1")
+    server.tcp_server.close
+  end
+
   def test_server_responds_to_root
     response = Faraday.get 'http://127.0.0.1:9292/'
     expected_1 = "<body><pre>\nVerb: GET\nPath: /\n"

@@ -5,6 +5,8 @@ require 'pry'
 
 class Server
 
+  attr_reader :tcp_server
+
   def initialize(port)
     @tcp_server = TCPServer.new(port)
     @formatter = RequestFormatter.new
