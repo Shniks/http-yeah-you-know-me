@@ -53,8 +53,8 @@ class RequestFormatter
   end
 
   def request_content_length(request_lines)
-    @content_length = request_lines[3].split(" ")[1].to_i
-    # @content_length = request_lines.select { |line| line.start_with?("Content-Length:") }[0].split(":")[1].to_i
+    @content_length = request_lines.select { |line| line.\
+      start_with?("Content-Length:") }[0].split(":")[1].to_i
   end
 
   def location(request_lines)

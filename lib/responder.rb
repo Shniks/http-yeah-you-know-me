@@ -15,12 +15,13 @@ class Responder
   def route(request)
     @request = request
     return route_post(request) if @formatter.verb(request) == "POST"
-    return route_get(request, request_count = @request_count, hello_count = @hello_count) if @formatter.verb(request) == "GET"
+    return route_get(request, request_count = @request_count,
+       hello_count = @hello_count) if @formatter.verb(request) == "GET"
   end
 
   def route_post(request)
     return start_game(request) if @formatter.path(request) == "/start_game"
-    return play_game if @formatter.path(@request).include?("/game")
+    return play_game(request) if @formatter.path(@request).include?("/game")
     return not_found
   end
 
@@ -71,17 +72,32 @@ class Responder
   end
 
   def start_game(request_lines)
-    root_response(request_lines) + "\n" + "Good luck!"
-
-
+    if @game_running == true
+      response = root_response(request_lines) + "\n" + "Game in progress!"
+    else
+      @game = Game.new
+      @game_running = true
+      response = root_response(request_lines) + "\n" + "Good luck!"
+    end
+    response
   end
 
   def game
-    @game.feedback
+    if @game_running == true
+      response = @game.feedback
+    else
+      response = "No game in progress!"
+    end
+    response
   end
 
   def play_game(guess)
-
+    if @game_running == true
+      @game.player_guess(guess)
+    else
+      response = "No game in progress!"
+    end
+    response
   end
 
 end

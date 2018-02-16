@@ -29,13 +29,18 @@ class Server
     while line = @client.gets and !line.chomp.empty?
       request_lines << line.chomp
     end
-    request_lines
+    if @formatter.verb(request_lines) +
+      @formatter.path(request_lines) == "POST/game"
+      return read_guess(request_lines)
+    else
+      return request_lines
+    end
   end
 
-  def read_guess
-    body = @client.read(@formatter.content_length)
+  def read_guess(request_lines)
+    body = @client.read(@formatter.request_content_length(request_lines))
     guess = @formatter.user_guess(body)
-    @formatter.play_game(guess)
+    @responder.route_post(guess)
   end
 
   def response_from_server(response)
