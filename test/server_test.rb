@@ -32,15 +32,6 @@ class ServerTest < Minitest::Test
     assert response.body.include?(expected_2)
   end
 
-  def test_server_responds_to_word_search
-    response = Faraday.get 'http://127.0.0.1:9292/word_search'
-    expected_1 = "<body><pre>\nVerb: GET\nPath: /word_search\n"
-    expected_2 = "</pre></body></html>"
-
-    assert response.body.include?(expected_1)
-    assert response.body.include?(expected_2)
-  end
-
   def test_server_responds_to_word_search_test_word
     response = Faraday.get 'http://127.0.0.1:9292/word_search?word=milk'
     expected_1 = "<body><pre>\nVerb: GET\nPath: /word_search?word=milk\n"

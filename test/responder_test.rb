@@ -15,7 +15,7 @@ class ResponderTest < Minitest::Test
   def test_root_path_response
     request_lines = ["GET / HTTP/1.1", "Host: 127.0.0.1:9292"]
     expected = "<pre>\nVerb: GET\nPath: /\nProtocol:\ HTTP/1.1\n"
-    result = @responder.response_created(request_lines)
+    result = @responder.route(request_lines)
 
     assert result.include?(expected)
   end
@@ -29,8 +29,8 @@ class ResponderTest < Minitest::Test
 
   def test_miscellaneous_path_response
     request_lines = ["GET /testing HTTP/1.1", "Host: 127.0.0.1:9292"]
-    expected = "<pre>\nVerb: GET\nPath: /testing\nProtocol:\ HTTP/1.1\n"
-    result = @responder.response_created(request_lines)
+    expected = "404 Not Found"
+    result = @responder.route(request_lines)
 
     assert result.include?(expected)
   end
@@ -38,7 +38,7 @@ class ResponderTest < Minitest::Test
   def test_hello_world_path_response
     request_count = 3
     hello_count = 12
-    result = @responder.response_created(@request_lines, request_count,\
+    result = @responder.route_get(@request_lines, request_count,\
     hello_count)
 
     assert result.include?("Hello World! (12)")
@@ -62,7 +62,7 @@ class ResponderTest < Minitest::Test
 
   def test_date_time_response
     request_lines = ["GET /datetime HTTP/1.1", "Host: 127.0.0.1:9292"]
-    result = @responder.response_created(request_lines).split("\n").last
+    result = @responder.route(request_lines).split("\n").last
     expected = Time.now.strftime('%H:%M%p on %A, %B %d, %Y')
 
     assert_equal expected, result
@@ -73,7 +73,7 @@ class ResponderTest < Minitest::Test
      HTTP/1.1", "Host: 127.0.0.1:9292"]
     request_count = 3
     hello_count = 12
-    result = @responder.response_created(request_lines, request_count,\
+    result = @responder.route_get(request_lines, request_count,\
     hello_count)
 
     assert_instance_of String, result
@@ -103,7 +103,7 @@ class ResponderTest < Minitest::Test
     request_count = 3
     hello_count = 12
     expected = "MILK is a known word.\nHONEY is a known word."
-    result = @responder.response_created(request_lines, request_count,\
+    result = @responder.route_get(request_lines, request_count,\
     hello_count)
 
     assert result.include?(expected)
@@ -124,8 +124,7 @@ class ResponderTest < Minitest::Test
     request_count = 3
     hello_count = 12
     expected = "MILK is a known word.\nCRAYCRAY is not a known word."
-    result = @responder.response_created(request_lines, request_count,\
-    hello_count)
+    result = @responder.route(request_lines)
 
     assert result.include?(expected)
   end
@@ -145,8 +144,7 @@ class ResponderTest < Minitest::Test
     request_count = 3
     hello_count = 12
     expected = "GRRF is not a known word.\nCRAYCRAY is not a known word."
-    result = @responder.response_created(request_lines, request_count,\
-    hello_count)
+    result = @responder.route(request_lines)
 
     assert result.include?(expected)
   end
@@ -160,13 +158,21 @@ class ResponderTest < Minitest::Test
     assert result.include?(expected)
   end
 
+  def test_game_response
+    request_lines = ["POST /start_game HTTP/1.1", "Host: 127.0.0.1:9292"]
+    result = @responder.route(request_lines).split("\n").last
+    expected = "Good luck!"
+
+    assert_equal expected, result
+  end
+
   def test_shutdown_path_response
     request_lines = ["GET /shutdown HTTP/1.1", "Host:\
      127.0.0.1:9292"]
     request_count = 3
     hello_count = 12
     expected = "Total requests: 3"
-    result = @responder.response_created(request_lines, request_count,\
+    result = @responder.route_get(request_lines, request_count,\
     hello_count)
 
     assert result.include?(expected)
