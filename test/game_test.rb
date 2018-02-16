@@ -4,7 +4,7 @@ require_relative 'test_helper'
 class GameTest < Minitest::Test
 
   def setup
-    @game = Game.new(server)
+    @game = Game.new
   end
 
   def test_if_it_exists
