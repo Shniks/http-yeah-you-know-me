@@ -2,6 +2,7 @@ require './lib/request_formatter'
 require './lib/word_search'
 require './lib/server'
 require './lib/game'
+require 'pry'
 
 class Responder
 
@@ -12,16 +13,16 @@ class Responder
     @game_running = false
   end
 
-  def route(request)
+  def route(request, client)
     @request = request
-    return route_post(request) if @formatter.verb(request) == "POST"
+    return route_post(request, client) if @formatter.verb(request) == "POST"
     return route_get(request, request_count = @request_count,
        hello_count = @hello_count) if @formatter.verb(request) == "GET"
   end
 
-  def route_post(request)
-    return start_game(request) if @formatter.path(request) == "/start_game"
-    return play_game(request) if @formatter.path(@request).include?("/game")
+  def route_post(request, client)
+    return start_game if @formatter.path(request) == "/start_game"
+    return play_game(request, client) if @formatter.path(request).include?("/game")
     return not_found
   end
 
@@ -71,13 +72,13 @@ class Responder
     "500 SystemError"
   end
 
-  def start_game(request_lines)
+  def start_game
     if @game_running == true
-      response = root_response(request_lines) + "\n" + "Game in progress!"
+      response = "Game in progress!"
     else
       @game = Game.new
       @game_running = true
-      response = root_response(request_lines) + "\n" + "Good luck!"
+      response = "Good luck!"
     end
     response
   end
@@ -91,13 +92,19 @@ class Responder
     response
   end
 
-  def play_game(guess)
+  def play_game(request, client)
     if @game_running == true
-      @game.player_guess(guess)
+      guess = read_guess(request, client)
+      response = @game.player_guess(guess)
     else
       response = "No game in progress!"
     end
     response
+  end
+
+  def read_guess(request, client)
+    body = client.read(@formatter.request_content_length(request))
+    @formatter.user_guess(body)
   end
 
 end

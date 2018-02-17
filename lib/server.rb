@@ -16,7 +16,7 @@ class Server
   def sequence
     accept_request
     request = read_the_request
-    response = @responder.route(request)
+    response = @responder.route(request, @client)
     response_from_server(response)
     terminate_sequence(request)
   end
@@ -31,18 +31,11 @@ class Server
     while line = @client.gets and !line.chomp.empty?
       request_lines << line.chomp
     end
-    if @formatter.verb(request_lines) +
-      @formatter.path(request_lines) == "POST/game"
-      return read_guess(request_lines)
-    else
-      return request_lines
-    end
+    request_lines
   end
 
-  def read_guess(request_lines)
-    body = @client.read(@formatter.request_content_length(request_lines))
-    guess = @formatter.user_guess(body)
-    @responder.route_post(guess)
+  def body
+    @client.read(@formatter.request_content_length(request_lines))
   end
 
   def response_from_server(response)

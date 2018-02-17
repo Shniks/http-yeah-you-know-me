@@ -5,15 +5,14 @@ class Game
 
   def initialize
     @guess_count = 0
-  end
-
-  def random_number(number = rand(0..100))
-    @random = number
+    @random = rand(0..100)
   end
 
   def player_guess(guess)
     @guess_count += 1
     @guess = guess.to_i
+    game_response
+    feedback
   end
 
   def game_response
@@ -24,7 +23,7 @@ class Game
   end
 
   def feedback
-    ["Total number of guesses made: #{@guess_count}",
+    ["Total number of guesses made: #{@guess_count}.",
     "Your most recent guess of #{@guess} is #{game_response}"].join("\n")
   end
 
