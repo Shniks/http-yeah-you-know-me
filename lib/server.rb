@@ -34,10 +34,6 @@ class Server
     request_lines
   end
 
-  def body
-    @client.read(@formatter.request_content_length(request_lines))
-  end
-
   def response_from_server(response)
     @output = "<html><head></head><body>#{response}</body></html>"
     @client.puts header(@output)
