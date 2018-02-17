@@ -1,11 +1,12 @@
 class Game
 
-  attr_reader :guess_count,
+  attr_reader :random_number,
+              :guess_count,
               :guess
 
-  def initialize
+  def initialize(random = rand(0..100))
     @guess_count = 0
-    @random = rand(0..100)
+    @random_number = random
   end
 
   def player_guess(guess)
@@ -16,9 +17,9 @@ class Game
   end
 
   def game_response
-    response = "too high." if @guess > @random
-    response = "too low." if @guess < @random
-    response = "correct." if @guess == @random
+    response = "too high." if @guess > @random_number
+    response = "too low." if @guess < @random_number
+    response = "correct." if @guess == @random_number
     response
   end
 

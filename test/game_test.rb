@@ -49,57 +49,57 @@ class GameTest < Minitest::Test
   end
 
   def test_it_can_send_too_high_game_response
-    @game.random_number(50)
-    @game.player_guess(68)
+    game = Game.new(50)
+    game.player_guess(68)
     expected = "too high."
 
-    assert_equal expected, @game.game_response
+    assert_equal expected, game.game_response
   end
 
   def test_it_can_send_too_low_game_response
-    @game.random_number(50)
-    @game.player_guess(38)
+    game = Game.new(50)
+    game.player_guess(38)
     expected = "too low."
 
-    assert_equal expected, @game.game_response
+    assert_equal expected, game.game_response
   end
 
   def test_it_can_send_correct_game_response
-    @game.random_number(50)
-    @game.player_guess(50)
+    game = Game.new(50)
+    game.player_guess(50)
     expected = "correct."
 
-    assert_equal expected, @game.game_response
+    assert_equal expected, game.game_response
   end
 
   def test_it_can_give_feedback_for_one_guess
-    @game.random_number(50)
-    @game.player_guess(65)
-    expected = "1\nYour most recent guess of 65 is too high."
+    game = Game.new(50)
+    game.player_guess(65)
+    expected = "1.\nYour most recent guess of 65 is too high."
 
-    assert @game.feedback.include?(expected)
+    assert game.feedback.include?(expected)
   end
 
   def test_it_can_give_feedback_for_three_guesses
-    @game.random_number(50)
-    @game.player_guess(13)
-    @game.player_guess(77)
-    @game.player_guess(33)
-    expected = "3\nYour most recent guess of 33 is too low."
+    game = Game.new(50)
+    game.player_guess(13)
+    game.player_guess(77)
+    game.player_guess(33)
+    expected = "3.\nYour most recent guess of 33 is too low."
 
-    assert @game.feedback.include?(expected)
+    assert game.feedback.include?(expected)
   end
 
   def test_it_can_give_feedback_for_five_guesses
-    @game.random_number(35)
-    @game.player_guess(13)
-    @game.player_guess(77)
-    @game.player_guess(88)
-    @game.player_guess(22)
-    @game.player_guess(35)
-    expected = "5\nYour most recent guess of 35 is correct."
+    game = Game.new(35)
+    game.player_guess(13)
+    game.player_guess(77)
+    game.player_guess(88)
+    game.player_guess(22)
+    game.player_guess(35)
+    expected = "5.\nYour most recent guess of 35 is correct."
 
-    assert @game.feedback.include?(expected)
+    assert game.feedback.include?(expected)
   end
 
 end
