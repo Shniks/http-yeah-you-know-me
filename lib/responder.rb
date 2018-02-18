@@ -41,13 +41,13 @@ class Responder
   end
 
   def root_response(request_lines)
-    result = [@formatter.request_full_output(request_lines), "200 OK"]
+    [@formatter.request_full_output(request_lines), "200 OK"]
   end
 
   def hello_world_response(request_lines, hello_count)
     @hello_count += 1
-    response = root_response(request_lines)[0] + "\n" + "Hello World! (#{hello_count})"
-    [response, "200 OK"]
+    [root_response(request_lines)[0] + "\n" + "Hello World! (#{hello_count})",
+    "200 OK"]
   end
 
   def date_time_response(request_lines)
@@ -61,7 +61,8 @@ class Responder
   end
 
   def shutdown_response(request_lines, request_count)
-    [root_response(request_lines)[0] + "\n" + "Total requests: #{request_count}\n", "200 OK"]
+    [root_response(request_lines)[0] +
+     "\n" + "Total requests: #{request_count}\n", "200 OK"]
   end
 
   def not_found
