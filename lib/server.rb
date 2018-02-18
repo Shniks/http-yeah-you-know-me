@@ -54,7 +54,9 @@ class Server
     puts ["Wrote this response:", @output].join("\n")
   end
 
-  def header(response, output)
+  def header(response, output, location = nil)
+    location = "Location: http://127.0.0.1:9292/game"\
+     if response[1] == "302 Moved Permanently"
     ["http/1.1 #{response[1]}",
       "date: #{Time.now.strftime('%a, %e %b %Y %H:%M:%S %z')}",
       "server: ruby",

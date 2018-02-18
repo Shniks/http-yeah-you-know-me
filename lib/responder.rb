@@ -79,7 +79,7 @@ class Responder
     else
       @game = Game.new
       @game_running = true
-      response = ["Good luck!", "301 Moved Permanently"]
+      response = ["Good luck!", "302 Moved Permanently"]
     end
     response
   end
@@ -98,7 +98,7 @@ class Responder
       guess = read_guess(request, client)
       response = [@game.player_guess(guess), "200 OK"]
     else
-      response = ["No game in progress!", "301 Moved Permanently"]
+      response = ["No game in progress!", "302 Moved Permanently"]
     end
     response
   end
