@@ -2,7 +2,6 @@ require './lib/request_formatter'
 require './lib/word_search'
 require './lib/server'
 require './lib/game'
-require 'pry'
 
 class Responder
 

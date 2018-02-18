@@ -1,7 +1,6 @@
 require 'socket'
 require './lib/request_formatter'
 require './lib/responder'
-require 'pry'
 
 class Server
 
