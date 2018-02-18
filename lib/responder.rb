@@ -13,7 +13,7 @@ class Responder
     @game_running = false
   end
 
-  def route(request, client)
+  def route(request, client = 0)
     @request = request
     return route_post(request, client) if @formatter.verb(request) == "POST"
     return route_get(request, request_count = @request_count,
