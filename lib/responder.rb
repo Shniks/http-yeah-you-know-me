@@ -41,52 +41,53 @@ class Responder
   end
 
   def root_response(request_lines)
-    @formatter.request_full_output(request_lines)
+    result = [@formatter.request_full_output(request_lines), "200 OK"]
   end
 
   def hello_world_response(request_lines, hello_count)
     @hello_count += 1
-    root_response(request_lines) + "\n" + "Hello World! (#{hello_count})"
+    response = root_response(request_lines)[0] + "\n" + "Hello World! (#{hello_count})"
+    [response, "200 OK"]
   end
 
   def date_time_response(request_lines)
-    root_response(request_lines) + "\n" +\
-    Time.now.strftime('%H:%M%p on %A, %B %d, %Y')
+    [root_response(request_lines)[0] + "\n" +\
+    Time.now.strftime('%H:%M%p on %A, %B %d, %Y'), "200 OK"]
   end
 
   def word_search_response(request_lines)
-    root_response(request_lines) + "\n" +\
-    WordSearch.new.word_search_response(request_lines)
+    [root_response(request_lines)[0] + "\n" +\
+    WordSearch.new.word_search_response(request_lines), "200 OK"]
   end
 
   def shutdown_response(request_lines, request_count)
-    root_response(request_lines) + "\n" + "Total requests: #{request_count}\n"
+    [root_response(request_lines)[0] + "\n" + "Total requests: #{request_count}\n", "200 OK"]
   end
 
   def not_found
-    "404 Not Found"
+    ["Exception: Not Found", "404 Not Found"]
   end
 
   def force_error
-    "500 SystemError"
+    ["SystemError", "500 Internal Server Error"]
   end
 
   def start_game
     if @game_running == true
-      response = "Game in progress!"
+      response = ["Game in progress!", "403 Forbidden"]
     else
       @game = Game.new
       @game_running = true
-      response = "Good luck!"
+      response = ["Good luck!", "301 Moved Permanently"]
     end
     response
   end
 
   def game
     if @game_running == true
-      response = @game.feedback
+      response = [@game.feedback, "200 OK"]
     else
-      response = "No game in progress!"
+      response = ["No game in progress!", "301 Moved Permanently"]
     end
     response
   end
@@ -94,9 +95,9 @@ class Responder
   def play_game(request, client)
     if @game_running == true
       guess = read_guess(request, client)
-      response = @game.player_guess(guess)
+      response = [@game.player_guess(guess), "200 OK"]
     else
-      response = "No game in progress!"
+      response = ["No game in progress!", "301 Moved Permanently"]
     end
     response
   end

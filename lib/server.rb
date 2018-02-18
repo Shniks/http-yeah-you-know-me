@@ -34,8 +34,8 @@ class Server
   end
 
   def response_from_server(response)
-    @output = "<html><head></head><body>#{response}</body></html>"
-    @client.puts header(@output)
+    @output = "<html><head></head><body>#{response[0]}</body></html>"
+    @client.puts header(response, @output)
     @client.puts @output
   end
 
@@ -51,11 +51,11 @@ class Server
   def close_the_server
     @client.close
     @tcp_server.close
-    puts ["Wrote this response:", @headers, @output].join("\n")
+    puts ["Wrote this response:", @output].join("\n")
   end
 
-  def header(output)
-    ["http/1.1 200 ok",
+  def header(response, output)
+    ["http/1.1 #{response[1]}",
       "date: #{Time.now.strftime('%a, %e %b %Y %H:%M:%S %z')}",
       "server: ruby",
       "content-type: text/html; charset=iso-8859-1",

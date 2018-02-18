@@ -16,8 +16,9 @@ class ServerTest < Minitest::Test
   def test_if_it_has_headers
     server = Server.new(9191)
     output = "Testing this piece"
+    response = "200 OK"
 
-    assert server.header(output).include?("text/html; charset=iso-8859-1")
+    assert server.header(response, output).include?("text/html; charset=iso-8859-1")
     server.tcp_server.close
   end
 
